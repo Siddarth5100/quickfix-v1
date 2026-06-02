@@ -145,6 +145,12 @@ app_license = "mit"
 # 	}
 # }
 
+doc_events = {
+	"*": {
+		"on_update": "quickfix.service_center.doctype.audit_log.audit_log.log_change"
+	}
+}
+
 # Scheduled Tasks
 # ---------------
 
