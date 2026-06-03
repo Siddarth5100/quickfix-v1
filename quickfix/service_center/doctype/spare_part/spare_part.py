@@ -1,9 +1,19 @@
 # Copyright (c) 2026, JC Siddarth and contributors
 # For license information, please see license.txt
 
-# import frappe
+import frappe
 from frappe.model.document import Document
+from frappe.model.naming import make_autoname
 
 
 class SparePart(Document):
-	pass
+	# create auto name on speare part
+	def autoname(self):
+		# convert to uppercase
+		if not self.part_code:
+			frappe.throw("Enter Part code Eg: PART-001")
+
+		self.part_code = self.part_code.upper()
+
+		# make autoname
+		self.name = make_autoname("SPARE-PART-.####")
