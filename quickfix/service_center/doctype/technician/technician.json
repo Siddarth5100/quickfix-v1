@@ -83,7 +83,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-06-03 06:44:33.914140",
+ "modified": "2026-06-03 18:39:38.930469",
  "modified_by": "Administrator",
  "module": "Service Center",
  "name": "Technician",
@@ -105,8 +105,11 @@
  ],
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
+ "search_fields": "specialization",
+ "show_title_field_in_link": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
+ "title_field": "technician_name",
  "track_changes": 1
 }
