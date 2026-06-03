@@ -5,6 +5,16 @@ app_description = "App for Service center"
 app_email = "siddarthsiddhu5100@gmail.com"
 app_license = "mit"
 
+'''
+pre populate records via fixtures
+'''
+
+fixtures = [
+	{
+        "doctype": "Device Type"
+	},
+]
+
 # Apps
 # ------------------
 
