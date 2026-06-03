@@ -171,7 +171,9 @@ override_doctype_class = {
 
 doc_events = {
 	"*": {
-		"on_update": "quickfix.service_center.doctype.audit_log.audit_log.log_change"
+		"on_update": "quickfix.service_center.doctype.audit_log.audit_log.log_change",
+        "on_submit": "quickfix.service_center.doctype.audit_log.audit_log.log_change",
+        "on_cancel": "quickfix.service_center.doctype.audit_log.audit_log.log_change"
 	}
 }
 
@@ -214,6 +216,10 @@ doc_events = {
 # override_doctype_dashboards = {
 # 	"Task": "quickfix.task.get_dashboard_data"
 # }
+
+override_whitelisted_methods = {
+	"frappe.client.get_count": "quickfix.api.custom_get_count"
+}
 
 # exempt linked doctypes from being automatically cancelled
 #
