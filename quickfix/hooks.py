@@ -38,6 +38,8 @@ fixtures = [
 # app_include_css = "/assets/quickfix/css/quickfix.css"
 # app_include_js = "/assets/quickfix/js/quickfix.js"
 
+app_include_js = "quickfix/public/js/quickfix.js"
+
 # include js, css files in header of web template
 # web_include_css = "/assets/quickfix/css/quickfix.css"
 # web_include_js = "/assets/quickfix/js/quickfix.js"
@@ -88,6 +90,12 @@ fixtures = [
 # 	"methods": "quickfix.utils.jinja_methods",
 # 	"filters": "quickfix.utils.jinja_filters"
 # }
+
+# add methods and filters to jinja environment
+jinja = {
+	"methods": "quickfix.utils.get_shop_name",
+	"filters": "quickfix.utils.format_job_id"
+}
 
 # Installation
 # ------------
