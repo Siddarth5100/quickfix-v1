@@ -68,4 +68,7 @@ class JobCard(Document):
 	def on_cancel(self):
 		self.status = "Cancelled"
 
-
+	def on_trash(self):
+		# if self.status != "Cancelled" or self.status != "Draft":
+		# 	frappe.throw("Status should be either 'Cancelled' or 'Draft'")
+		pass
