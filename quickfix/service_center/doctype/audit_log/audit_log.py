@@ -8,6 +8,8 @@ from frappe.utils import now_datetime
 class AuditLog(Document):
 	pass
 
+# F1 - doc_events: Wildcard, Multiple Handlers, Order (5 pts)
+# Task A - Wildcard handler:
 def log_change(doc, method):
 	if doc.doctype == "Audit Log":
 		return
