@@ -85,7 +85,7 @@ frappe.ui.form.on("Job Card", {
                         fieldname: "status",
                         value: "Delivered"
                     },
-                    callback:function () {
+                    callback: function () {
                         frm.reload_doc().then(() => {
                             frm.refresh();
                         });
@@ -94,11 +94,48 @@ frappe.ui.form.on("Job Card", {
             });
         }
 
+        // display app name in the form header
         let shop_name = frappe.boot.quickfix_shop_name;
-        console.log(shop_name)
-
         if(shop_name) {
             frm.page.set_title(frappe.boot.quickfix_shop_name)
         }
-    }
+
+        // H2 - Dialog, Prompt, Confirm
+        // add custom button with dialog mandatory
+        frm.add_custom_button("Reject Job", function() {
+            let d = new frappe.ui.Dialog({
+                title: "Reject Job",
+                fields: [
+                    {
+                        label: "Rejection Reason",
+                        fieldname: "reason",
+                        fieldtype: "Small Text",
+                        reqd: 1
+                    }
+                ],
+                
+                size: "small", 
+                primary_action_label: "Submit",
+                primary_action(values) {
+                    console.log(values);
+                    d.hide();
+                }
+            });
+            d.show()
+        })
+
+        // using prompt create button to transfer technician
+        frm.add_custom_button("Transfer Technician", function() {
+            frappe.prompt(
+                [
+                    {
+                        fieldtype: "Link",
+                        label: "Select Technician",
+                        fieldname: "technician_name",
+                        options: "Technician"
+                    }
+                ]
+            )
+        })
+    },
 });
