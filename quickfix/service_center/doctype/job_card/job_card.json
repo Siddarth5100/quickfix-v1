@@ -32,7 +32,8 @@
   "remarks",
   "section_break_qngg",
   "status",
-  "amended_from"
+  "amended_from",
+  "reason_for_rejection"
  ],
  "fields": [
   {
@@ -200,13 +201,19 @@
    "fieldtype": "Table",
    "label": "Parts Used",
    "options": "Part Usage Entry"
+  },
+  {
+   "fieldname": "reason_for_rejection",
+   "fieldtype": "Small Text",
+   "hidden": 1,
+   "label": "Reason For Rejection"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-06-04 06:52:50.872567",
+ "modified": "2026-06-04 12:34:06.211211",
  "modified_by": "Administrator",
  "module": "Service Center",
  "name": "Job Card",
