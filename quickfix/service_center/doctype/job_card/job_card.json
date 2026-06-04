@@ -173,6 +173,7 @@
    "fieldtype": "Section Break"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "status",
    "fieldtype": "Select",
    "in_list_view": 1,
@@ -205,7 +206,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-06-01 18:46:36.036216",
+ "modified": "2026-06-04 06:52:50.872567",
  "modified_by": "Administrator",
  "module": "Service Center",
  "name": "Job Card",
