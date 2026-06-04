@@ -36,5 +36,40 @@ frappe.ui.form.on("Job Card", {
                 frappe.msgprint("There is no technician in this specialization")
             }
         });
+    },
+
+    refresh(frm) {
+        console.log("refresh called")
+        if (frm.doc.status == "Draft") {
+            frm.dashboard.add_indicator("Draft", "gray")
+        }
+
+        if (frm.doc.status == "Pending") {
+            frm.dashboard.add_indicator("Pending", "orange")
+        }
+
+        if (frm.doc.status == "Diagnosis") {
+            frm.dashboard.add_indicator("Diagnosis", "blue")
+        }
+
+        if (frm.doc.status == "Awaiting Customer Approval") {
+            frm.dashboard.add_indicator("Awaiting Customer Approval", "yellow")
+        }
+
+        if (frm.doc.status == "In Repair") {
+            frm.dashboard.add_indicator("In Repair", "blue")
+        }
+        
+        if (frm.doc.status == "Ready for Delivery") {
+            frm.dashboard.add_indicator("Ready for Delivery", "green")
+        }
+
+        if (frm.doc.status == "Delivered") {
+            frm.dashboard.add_indicator("Delivered", "green")
+        }
+
+        if (frm.doc.status == "Cancelled") {
+            frm.dashboard.add_indicator("Cancelled", "red")
+        }
     }
 });
