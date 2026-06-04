@@ -93,5 +93,12 @@ frappe.ui.form.on("Job Card", {
                 })
             });
         }
+
+        let shop_name = frappe.boot.quickfix_shop_name;
+        console.log(shop_name)
+
+        if(shop_name) {
+            frm.page.set_title(frappe.boot.quickfix_shop_name)
+        }
     }
 });
