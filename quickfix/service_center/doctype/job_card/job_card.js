@@ -13,6 +13,7 @@ console.log("-----------Jobcard js loaded")
 
 frappe.ui.form.on("Job Card", {
     setup(frm) {
+        // filter technician
         frm.set_query("assigned_technician", function() {
             return {
                 filters: {
@@ -39,7 +40,7 @@ frappe.ui.form.on("Job Card", {
     },
 
     refresh(frm) {
-        console.log("refresh called")
+        // add color code indicator
         if (frm.doc.status == "Draft") {
             frm.dashboard.add_indicator("Draft", "gray")
         }
@@ -70,6 +71,27 @@ frappe.ui.form.on("Job Card", {
 
         if (frm.doc.status == "Cancelled") {
             frm.dashboard.add_indicator("Cancelled", "red")
+        }
+
+        // add custom button ready for delivered
+        if (frm.doc.status == "Ready for Delivery" && frm.doc.docstatus == 1) {
+            frm.add_custom_button("Mark as Delivered", function() {
+                
+                frappe.call({
+                    method: "frappe.client.set_value",
+                    args: {
+                        doctype: frm.doctype,
+                        name: frm.docname,
+                        fieldname: "status",
+                        value: "Delivered"
+                    },
+                    callback:function () {
+                        frm.reload_doc().then(() => {
+                            frm.refresh();
+                        });
+                    }
+                })
+            });
         }
     }
 });
