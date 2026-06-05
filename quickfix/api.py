@@ -21,6 +21,14 @@ def get_overdue_jobs():
 
     return overdue_jobs    
 
+# D1 - Roles, Permission Matrix, Document Sharing
+# Demonstrate frappe.share: write a whitelisted method
+# share_job_card(job_card_name, user_email)
+@frappe.whitelist()
+def share_job_card(job_card_name, user_email):
+    frappe.share.add("Job Card", job_card_name, user_email, read=1)
+    return "Shared successfully"
+
 # F4 - override_whitelisted_methods Hook
 @frappe.whitelist()
 def custom_get_count(doctype, filters = None, debug = False, cache = False):
