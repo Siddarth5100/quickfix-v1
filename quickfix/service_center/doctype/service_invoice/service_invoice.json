@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "INVOICE-.#####",
  "creation": "2026-06-01 18:56:29.597417",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -63,10 +64,11 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-06-01 19:00:19.700275",
+ "modified": "2026-06-05 16:49:55.524669",
  "modified_by": "Administrator",
  "module": "Service Center",
  "name": "Service Invoice",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {
