@@ -15,7 +15,7 @@ fixtures = [
 	{
         "doctype": "Role",
         "filters": [
-            "name", "in", ["QF Service Staff", "QF Technician", "QF Manager"]
+            ["name", "in", ["QF Service Staff", "QF Technician", "QF Manager"]]
 		]
 	}
 ]
