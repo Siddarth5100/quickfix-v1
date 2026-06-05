@@ -5,14 +5,19 @@ app_description = "App for Service center"
 app_email = "siddarthsiddhu5100@gmail.com"
 app_license = "mit"
 
-'''
-pre populate records via fixtures
-'''
-
 fixtures = [
+	# pre populate records via fixtures
 	{
         "doctype": "Device Type"
 	},
+    
+	# Export this permission setup as fixtures (Role + DocType permission records)
+	{
+        "doctype": "Role",
+        "filters": [
+            "name", "in", ["QF Service Staff", "QF Technician", "QF Manager"]
+		]
+	}
 ]
 
 # Apps
