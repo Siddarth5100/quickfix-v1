@@ -66,7 +66,16 @@ class JobCard(Document):
 		# enqueue job ready email
 
 	def on_cancel(self):
+		# Set status = "Cancelled"
 		self.status = "Cancelled"
+
+		# Restore stock_qty for all parts
+		for part in self.parts_used:
+			
+			spare_part = frappe.get_doc("Spare Part", part.part)
+			spare_part.stock_qty += part.quantity
+			spare_part.save()
+
 
 	def on_trash(self):
 		if self.status not in ["Cancelled", "Draft"]:
