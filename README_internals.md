@@ -1,6 +1,34 @@
 
+### B2 - ORM Internals & Query Builder
 
-F3 - Asset, Jinja & Website Hooks
+Part A:
+* Out[16]: (('tabJob Card',), ('tabScheduled Job Log',), ('tabScheduled Job Type',))
+
+* payment_status, delivery_date, remarks, status, reason_for_rejection
+
+### C1 - Device Type, Technician, Spare Part, QuickFix Settings
+### Child Table Internals
+* 
+
+
+### Part D - DocStatus transitions
+* 0 1 2(0 => draft, 1 => submitted, 2 => Cancelled)
+* 
+doc.save() on a submitted document
+Will gets block or succeeds silenty
+Eg: In [3]: doc = frappe.get_doc("Job Card", "JC-2026-00007")
+In [4]: doc.save()
+Out[4]: <CustomJobCard: JC-2026-00007 docstatus=1>
+
+doc.submit() on a cancelled one:
+ValidationError: Cannot edit cancelled document
+
+### Part E - Dangerous patterns
+
+* validate is part of save process, cause recursion error, validate only validate
+* Updating another document on validate, again it is not validating
+
+### F3 - Asset, Jinja & Website Hooks
 
 ### Asset Hooks
 
