@@ -21,7 +21,6 @@ def get_overdue_jobs():
 
     return overdue_jobs    
 
-
 # F4 - override_whitelisted_methods Hook
 @frappe.whitelist()
 def custom_get_count(doctype, filters = None, debug = False, cache = False):
