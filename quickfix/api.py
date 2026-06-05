@@ -29,6 +29,12 @@ def share_job_card(job_card_name, user_email):
     frappe.share.add("Job Card", job_card_name, user_email, read=1)
     return "Shared successfully"
 
+# In api.py, write a method that calls frappe.only_for("QF Manager")
+@frappe.whitelist()
+def manager_call():
+	frappe.only_for("QF Manager")
+	return "Successful"
+
 # F4 - override_whitelisted_methods Hook
 @frappe.whitelist()
 def custom_get_count(doctype, filters = None, debug = False, cache = False):
