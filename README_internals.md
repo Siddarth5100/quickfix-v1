@@ -8,8 +8,15 @@ Part A:
 
 ### C1 - Device Type, Technician, Spare Part, QuickFix Settings
 ### Child Table Internals
-* 
+* parent, parentfield, parenttype, idx
+* tabPart Usage Entry
+* idx value gets swapped to the next row, row 3 will become 2
 
+### C3 - Part Usage Entry & Service Invoice
+### Renaming task - write in README_internals.md:
+* Once renamed it gets reflected in both original doctype and linke field. Track changes will follow the changes happened, if dint enable then also same rename works, but now the changes not gets tracked. We dont have any reference if anything goes wrong.
+
+* unique constraints works on UI level, it will not allow to add duplicate from UI itself, using frappe.db.exists() in validate for backend db level constraints, sometimes we can bypass UI level but backend will gets blocked.
 
 ### Part D - DocStatus transitions
 * 0 1 2(0 => draft, 1 => submitted, 2 => Cancelled)
