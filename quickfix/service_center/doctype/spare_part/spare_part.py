@@ -7,6 +7,11 @@ from frappe.model.naming import make_autoname
 
 
 class SparePart(Document):
+	def validate(self):
+	# Validate: selling_price > unit_cost always
+		if not self.selling_price > self.unit_cost:
+			frappe.throw("Selling price should be greater than unit cost")
+
 	# create auto name on speare part
 	def autoname(self):
 		# convert to uppercase
