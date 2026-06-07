@@ -9,6 +9,17 @@ def extend_bootinfo(bootinfo):
     bootinfo.quickfix_shop_name = settings.shop_name
     bootinfo.quickfix_manager_email = settings.manager_email
 
+# E1 - Complete Job Card Lifecycle
+# on_submit(): Enqueue send_job_ready_email
+def send_job_ready_email(job_card):
+    print("Email job is running", job_card)
+    doc = frappe.get_doc("Job Card", job_card)
+
+    frappe.sendmail(
+        recipients= [doc.customer_email],
+        subject= f"Device Status: {doc.status}",
+        message= f"Hi {doc.customer_name}, your device: {doc.device_type} current status: {doc.status}"
+    )
 
 # f3 jinja hooks: method to get_shop_name()
 def get_shop_name():

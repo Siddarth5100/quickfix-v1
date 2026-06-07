@@ -72,6 +72,11 @@ class JobCard(Document):
 			user= self.owner)
 		
 		# enqueue job ready email
+		frappe.enqueue(
+			"quickfix.utils.send_job_ready_email",
+			job_card= self.name,
+			queue= "short"
+		)
 
 	def on_cancel(self):
 		# Set status = "Cancelled"
