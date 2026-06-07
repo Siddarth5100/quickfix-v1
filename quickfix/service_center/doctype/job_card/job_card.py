@@ -37,6 +37,7 @@ class JobCard(Document):
 		if self.status != "Ready for Delivery":
 			frappe.throw("Status is not Ready for Delivery")
 		
+		# for each part in parts_used: check stock_qty >= quantity
 		for part in self.parts_used:
 			stock_avail = frappe.db.get_value("Spare Part", part.part, "stock_qty")
 			if not stock_avail >= part.quantity:
@@ -62,6 +63,13 @@ class JobCard(Document):
 		}).insert(ignore_permissions = True)
 		
 		# call publish realtime for job ready
+		frappe.publish_realtime(
+			'job_ready',
+			{
+				"job_card": self.name,
+				"status": "Ready"
+			},
+			user= self.owner)
 		
 		# enqueue job ready email
 

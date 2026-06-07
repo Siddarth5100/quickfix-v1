@@ -6,11 +6,18 @@
 
 // 	},
 // });
+console.log("-----------Jobcard js loaded")
+
+// E1 - Complete Job Card Lifecycle
+// on_submit():
+// Call frappe.publish_realtime("job_ready", {...}, user=self.owner)
+frappe.realtime.on("job_ready", function(data) {
+        alert(`Job ${data.job_card} is ready`);
+    });
+
 
 // H1 - Job Card Form Script
 // setup handler: assign technician based on the matching specilization
-console.log("-----------Jobcard js loaded")
-
 frappe.ui.form.on("Job Card", {
     setup(frm) {
         // filter technician
