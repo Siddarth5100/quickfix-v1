@@ -67,7 +67,7 @@ class JobCard(Document):
 
 	def on_cancel(self):
 		# Set status = "Cancelled"
-		self.status = "Cancelled"
+		self.db_set("status", "Cancelled")
 
 		# Restore stock_qty for all parts
 		for part in self.parts_used:
