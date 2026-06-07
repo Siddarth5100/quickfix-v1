@@ -174,13 +174,13 @@ override_doctype_class = {
 # 	}
 # }
 
-doc_events = {
-	"*": {
-		"on_update": "quickfix.service_center.doctype.audit_log.audit_log.log_change",
-        "on_submit": "quickfix.service_center.doctype.audit_log.audit_log.log_change",
-        "on_cancel": "quickfix.service_center.doctype.audit_log.audit_log.log_change"
-	}
-}
+# doc_events = {
+# 	"*": {
+# 		"on_update": "quickfix.service_center.doctype.audit_log.audit_log.log_change",
+#         "on_submit": "quickfix.service_center.doctype.audit_log.audit_log.log_change",
+#         "on_cancel": "quickfix.service_center.doctype.audit_log.audit_log.log_change"
+# 	}
+# }
 
 # Scheduled Tasks
 # ---------------

@@ -146,3 +146,16 @@ frappe.ui.form.on("Job Card", {
         })
     },
 });
+
+frappe.ui.form.on("Part Usage Entry", {
+    part: function(frm, cdt, cdn) {
+        var row = locals[cdt][cdn];
+        let total = row.unit_price * row.quantity
+        frappe.model.set_value(cdt, cdn, "total_price", total)
+    },
+
+    quantity: function(frm, cdt, cdn) {
+        var row = locals[cdt][cdn];
+        frappe.model.set_value(cdt, cdn, "total_price", row.unit_price * row.quantity)
+    }
+})
