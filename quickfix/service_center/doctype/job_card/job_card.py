@@ -4,7 +4,6 @@
 import frappe
 from frappe.model.document import Document
 
-
 class JobCard(Document):
 	def validate(self):
 		# validate phone number length
@@ -88,9 +87,20 @@ class JobCard(Document):
 			spare_part = frappe.get_doc("Spare Part", part.part)
 			spare_part.stock_qty += part.quantity
 			spare_part.save()
+		
+		# If Service Invoice exists, cancel it:
+		if frappe.db.exists("Service Invoice", {"job_card": self.name}):
+			invoice = frappe.db.get_value(
+				"Service Invoice",
+				{"job_card": self.name},
+				"name"
+			)
 
+			doc = frappe.get_doc("Service Invoice", invoice)
+			# doc.cancel()
 
 	def on_trash(self):
+		# prevent deletion of job cards with status != "Cancelled" & "Draft"
 		if self.status not in ["Cancelled", "Draft"]:
 			frappe.throw("Status should be either 'Cancelled' or 'Draft'")
 		
