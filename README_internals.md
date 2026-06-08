@@ -69,3 +69,51 @@ Both are different,
 Print format works on for a specific document, we can directly access the fields => document genric
 
 Web page is not related to any document => page/context
+
+### I1 - Query Report with SQL Safety
+
+### Que: Demonstrate and explain the issues and solutions with respect to f-string SQL and the parameterized pattern.
+
+### Ans:
+f-string : 
+* Allows for SQL Injection, where we can bypass login easily
+* Python evaluates the variables and convert to plain text SQL String before in send to Database
+
+Parameterization:
+* Use place holders instead Eg: %s, ?
+* Parameterized pattern prevents SQL Injection by sending the SQL structure and the user data as two separate transmission to the Database
+
+### Que: Add a EXPLAIN statement in bench console for your query - screenshot the result and identify if an index is being used on the status column
+
+### Ans:
+
+query:
+frappe.db.sql(
+    """
+    EXPLAIN
+    SELECT name, customer_name, device_type, status, assigned_technician, estimated_cost, creation
+    FROM `tabJob Card`
+    WHERE status NOT IN ('Delivered', 'Cancelled')
+    """, as_dict- True
+)
+ouput:
+
+[{'id': 1,
+  'select_type': 'SIMPLE',
+  'table': 'tabJob Card',
+  'type': 'ALL',
+  'possible_keys': None,
+  'key': None,
+  'key_len': None,
+  'ref': None,
+  'rows': '20',
+  'Extra': 'Using where'}]
+
+No index exists on the status column
+
+### I5 - Report Builder & Custom Report
+### Que: when is Report Builder appropriate? When must you use Script Report?
+
+* If we want prepare immediate report with simple query, without code we can use Report builder, with single doctype
+
+* If we want full control over the report we can use the script report, calculations, python logic, dynamic columns, multiple doctypes 
