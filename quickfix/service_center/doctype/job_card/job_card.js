@@ -125,6 +125,7 @@ frappe.ui.form.on("Job Card", {
                 primary_action_label: "Submit",
                 primary_action(values) {
                     console.log(values);
+                    frappe.model.set_value("Job Card", frm.name, "reason_for_rejection", values.reason)
                     d.hide();
                 }
             });
@@ -147,6 +148,8 @@ frappe.ui.form.on("Job Card", {
     },
 });
 
+// H1 - Job Card Form Script
+// Field change handlers: In child table Part: quantity change - update total_price = qty × unit_price using
 frappe.ui.form.on("Part Usage Entry", {
     part: function(frm, cdt, cdn) {
         var row = locals[cdt][cdn];

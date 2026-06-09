@@ -43,7 +43,7 @@ fixtures = [
 # app_include_css = "/assets/quickfix/css/quickfix.css"
 # app_include_js = "/assets/quickfix/js/quickfix.js"
 
-app_include_js = "quickfix/public/js/quickfix.js"
+# app_include_js = "quickfix/public/js/quickfix.js"
 
 # include js, css files in header of web template
 # web_include_css = "/assets/quickfix/css/quickfix.css"
@@ -108,7 +108,7 @@ jinja = {
 # before_install = "quickfix.install.before_install"
 # after_install = "quickfix.install.after_install"
 
-after_install = "quickfix.quickfix.utils.create_device"
+# after_install = "quickfix.utils.create_device"
 
 # Uninstallation
 # ------------

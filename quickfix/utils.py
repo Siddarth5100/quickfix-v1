@@ -21,12 +21,22 @@ def send_job_ready_email(job_card):
         message= f"Hi {doc.customer_name}, your device: {doc.device_type} current status: {doc.status}"
     )
 
-# f3 jinja hooks: method to get_shop_name()
+# F3 jinja hooks: method to get_shop_name()
 def get_shop_name():
     name = frappe.get_single("QuickFix Settings")
     return name.shop_name 
 
-# f3 jinja hooks: method to format_job_id()
+# F3 jinja hooks: method to format_job_id()
 def format_job_id(job_id):
     prefix_str = "JOB#"
     return prefix_str + job_id
+
+# F5 - Fixtures & Property Setters in Install
+def after_install():
+    frappe.make_property_setter(
+        {
+            "doctype": "Job Card",
+            "fieldname": "remarks",
+            "bold": 1
+        }
+    )
