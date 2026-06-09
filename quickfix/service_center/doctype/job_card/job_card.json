@@ -46,12 +46,12 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Customer Name",
+   "length": 25,
    "reqd": 1
   },
   {
    "fieldname": "customer_phone",
    "fieldtype": "Data",
-   "in_list_view": 1,
    "label": "Customer Phone",
    "reqd": 1
   },
@@ -86,7 +86,6 @@
   {
    "fieldname": "problem_description",
    "fieldtype": "Text Editor",
-   "in_list_view": 1,
    "label": "Problem Description",
    "reqd": 1
   },
@@ -213,7 +212,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-06-08 13:39:28.528698",
+ "modified": "2026-06-09 12:53:39.765119",
  "modified_by": "Administrator",
  "module": "Service Center",
  "name": "Job Card",

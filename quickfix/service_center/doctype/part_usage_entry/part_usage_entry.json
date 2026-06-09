@@ -25,7 +25,8 @@
    "fetch_from": "part.part_name",
    "fieldname": "part_name",
    "fieldtype": "Data",
-   "label": "Part Name"
+   "label": "Part Name",
+   "read_only": 1
   },
   {
    "fetch_from": "part.selling_price",
@@ -52,7 +53,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-06-01 18:44:32.257727",
+ "modified": "2026-06-09 13:13:08.431450",
  "modified_by": "Administrator",
  "module": "Service Center",
  "name": "Part Usage Entry",
