@@ -73,17 +73,16 @@
    "set_only_once": 1
   },
   {
-   "depends_on": "eval:doc.status==\"On Leave\";",
+   "depends_on": "eval: doc.status == \"On Leave\";",
    "fieldname": "notes",
    "fieldtype": "Text",
-   "hidden": 1,
    "label": "Notes"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-06-05 11:49:18.571301",
+ "modified": "2026-06-09 12:46:48.265092",
  "modified_by": "Administrator",
  "module": "Service Center",
  "name": "Technician",
