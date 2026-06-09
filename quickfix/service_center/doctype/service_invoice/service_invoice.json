@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "INVOICE-.#####",
+ "autoname": "INV-.YYYY.-.#####",
  "creation": "2026-06-01 18:56:29.597417",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -64,7 +64,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-06-05 16:49:55.524669",
+ "modified": "2026-06-09 13:17:18.246631",
  "modified_by": "Administrator",
  "module": "Service Center",
  "name": "Service Invoice",
@@ -88,5 +88,6 @@
  "rows_threshold_for_grid_search": 20,
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_views": 1
 }
