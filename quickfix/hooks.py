@@ -17,7 +17,29 @@ fixtures = [
         "filters": [
             ["name", "in", ["QF Service Staff", "QF Technician", "QF Manager"]]
 		]
+	},
+    
+	#  Custom field
+    
+	{
+        "doctype": "Custom Field"
+	},
+    
+	# Property Setter
+	{
+        "doctype": "Property Setter"
+	},
+    
+	# Workspace
+	{
+        "doctype": "Workspace"
+	},
+    
+	# Quickfiz settings
+	{
+        "doctype": "QuickFix Settings"
 	}
+
 ]
 
 # Apps
