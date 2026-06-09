@@ -21,4 +21,4 @@ class SparePart(Document):
 		self.part_code = self.part_code.upper()
 
 		# make autoname
-		self.name = make_autoname("SPARE-PART-.####")
+		self.name = make_autoname("PART-.YYYY.-.####")
