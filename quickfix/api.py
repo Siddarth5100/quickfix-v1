@@ -6,7 +6,6 @@ from frappe.query_builder import DocType
 # Write a function get_overdue_jobs() using frappe.qb
 def get_overdue_jobs():
     JC = DocType("Job Card")
-
     cutoff_date = add_days(nowdate(), -7)
 
     overdue_jobs = (
@@ -16,7 +15,7 @@ def get_overdue_jobs():
             JC.status.isin(["Pending Diagnosis", "In Repair"])
             & (JC.creation < cutoff_date)
         )
-        .orderby(JC.creation.asc())
+        .orderby(JC.creation)
     ).run(as_dict= True)
 
     return overdue_jobs    
