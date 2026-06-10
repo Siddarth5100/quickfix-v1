@@ -10,7 +10,7 @@ Part A:
 * 0 1 2(0 => draft, 1 => submitted, 2 => Cancelled)
 * 
 doc.save() on a submitted document
-Will gets block or succeeds silenty
+Will gets block or succeeds silently
 Eg: In [3]: doc = frappe.get_doc("Job Card", "JC-2026-00007")
 In [4]: doc.save()
 Out[4]: <CustomJobCard: JC-2026-00007 docstatus=1>
@@ -69,6 +69,32 @@ Both are different,
 Print format works on for a specific document, we can directly access the fields => document genric
 
 Web page is not related to any document => page/context
+
+
+### H3 - List View & Tree View
+### Que: Describe what a Tree DocType is (example: Account,Employee hierarchy). What is doctype_tree_js used for and what extra fields does a tree DocType require (parent_field, is_group)?
+
+### Ans:
+Tree doctype, modified tree order traversal. Interlinked in an organised way
+extra fields => lft, rgt, is_group, parent_account
+
+Eg: 
+Account
+	Bank_1
+		User_1
+			Primary Account
+			Secondary Account
+		User_2
+			primary Account
+	Bank_2
+		Primary Account
+
+Organisation
+	Location_1
+		HR
+		Devloper
+			Employee_1
+	Location_2
 
 ### I1 - Query Report with SQL Safety
 
