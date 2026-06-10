@@ -31,6 +31,15 @@ class JobCard(Document):
 		# calculate final amount
 		self.final_amount = self.parts_total + self.labour_charge
 	
+	def before_save(self):
+		# Enqueue send_job_ready_email
+		if self.status == "Ready for Delivery":
+			frappe.enqueue(
+				method= "quickfix.utils.send_job_ready_email",
+				queue= "short",
+				docname= self.name
+			)
+
 	def before_submit(self):
 		# allow only if status = ready for delivery
 		if self.status != "Ready for Delivery":
