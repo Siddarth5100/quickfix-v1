@@ -19,6 +19,37 @@ def get_overdue_jobs():
     ).run(as_dict= True)
 
     return overdue_jobs    
+# Part C - Transactions & commit behavior
+# Write a function transfer_job(from_tech, to_tech) that reassigns all open Job Cards
+@frappe.whitelist()
+def transfer_job(from_tech, to_tech):
+    try:
+        frappe.db.sql(
+            """
+            UPDATE `tabJob Card`
+            SET assigned_technician = %s
+            WHERE assigned_technician = %s
+            AND status NOT IN (%s, %s)
+            """,
+            (to_tech, from_tech, "Delivered", "Cancelled")
+        )
+
+        frappe.db.commit()
+
+        return {
+            "message": f"Open Jobs transferred from {from_tech} to {to_tech}" 
+        }
+    
+    except Exception as e:
+        frappe.db.rollback()
+
+        frappe.log_error(
+            frappe.get_traceback(),
+            "Job Transfer Failed"
+        )
+        
+        raise
+
 
 # D1 - Roles, Permission Matrix, Document Sharing
 # Demonstrate frappe.share: write a whitelisted method
