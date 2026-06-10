@@ -15,7 +15,6 @@ frappe.realtime.on("job_ready", function(data) {
         alert(`Job ${data.job_card} is ready`);
     });
 
-
 // H1 - Job Card Form Script
 // setup handler: assign technician based on the matching specilization
 frappe.ui.form.on("Job Card", {
@@ -125,7 +124,9 @@ frappe.ui.form.on("Job Card", {
                 primary_action_label: "Submit",
                 primary_action(values) {
                     console.log(values);
-                    frappe.model.set_value("Job Card", frm.name, "reason_for_rejection", values.reason)
+                    frm.set_value("reason_for_rejection", values.reason);
+                    frm.set_value("status", "Cancelled")
+                    frm.save();
                     d.hide();
                 }
             });
@@ -142,7 +143,26 @@ frappe.ui.form.on("Job Card", {
                         fieldname: "technician_name",
                         options: "Technician"
                     }
-                ]
+                ],
+                function (values) {
+                    frappe.confirm(
+                        "Are you Sure want to transfer?",
+                        () => {
+                            frappe.call({
+                                method: "quickfix.api.transfer_job",
+                                args: {
+                                    from_tech: frm.doc.assigned_technician,
+                                    to_tech: values.technician_name
+                                },
+                                callback: function (r) {
+                                    frappe.msgprint("Transferred job cards Successfully")
+                                    frm.reload_doc()
+                                    frm.trigger("assigned_technician")
+                                }
+                            })
+                        }
+                    )
+                }
             )
         })
     },
