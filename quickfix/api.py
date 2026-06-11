@@ -4,6 +4,7 @@ from frappe.query_builder import DocType
 
 # Part B - frappe.qb Query Builder
 # Write a function get_overdue_jobs() using frappe.qb
+@frappe.whitelist()
 def get_overdue_jobs():
     JC = DocType("Job Card")
     cutoff_date = add_days(nowdate(), -7)
@@ -19,6 +20,7 @@ def get_overdue_jobs():
     ).run(as_dict= True)
 
     return overdue_jobs    
+
 # Part C - Transactions & commit behavior
 # Write a function transfer_job(from_tech, to_tech) that reassigns all open Job Cards
 @frappe.whitelist()
@@ -33,7 +35,6 @@ def transfer_job(from_tech, to_tech):
             """,
             (to_tech, from_tech, "Delivered", "Cancelled")
         )
-
         frappe.db.commit()
 
         return {
@@ -47,9 +48,7 @@ def transfer_job(from_tech, to_tech):
             frappe.get_traceback(),
             "Job Transfer Failed"
         )
-        
         raise
-
 
 # D1 - Roles, Permission Matrix, Document Sharing
 # Demonstrate frappe.share: write a whitelisted method
@@ -81,4 +80,30 @@ def custom_get_count(doctype, filters = None, debug = False, cache = False):
 @frappe.whitelist()
 def add_rejection_update():
     # want to add logic here
-    pass    
+    pass
+
+# L1 - REST Resource API & Custom API
+# Task C - Custom whitelisted method design:
+@frappe.whitelist()
+def get_job_summary():
+    job_card_name = frappe.form_dict.get("job_card_name")
+
+    if not job_card_name:
+        return{
+            "error": "Required job_card_name"
+        }
+
+    if not frappe.db.exists("Job Card", job_card_name):
+        return {
+            "error": "Job Card not found",
+        }
+
+    doc = frappe.get_doc("Job Card", job_card_name)
+
+    return {
+        "name": doc.name,
+        "status": doc.status,
+        "customer_name": doc.customer_name,
+        "assigned_technician": doc.assigned_technician,
+        "device_type": doc.device_type
+    }
