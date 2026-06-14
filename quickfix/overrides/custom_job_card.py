@@ -22,3 +22,13 @@ in the custom one, validation written in core will not run
 only what written here will happen
 * When we want the core and custom one to happen we want to add super() 
 '''
+
+# when would you choose override_doctype_class over doc_events
+'''
+* When we want complete change or extend the core behavior of doctype
+* When we want to add extra actions on events (like after_save, on_submit)
+without touching or changing the original doctype
+
+override_doctype_class = replace/extend full logic
+doc_events = add extra behavior
+'''

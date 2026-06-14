@@ -1,4 +1,5 @@
 import frappe
+from frappe.utils import today, now_datetime
 
 def create_device():
     pass
@@ -18,6 +19,15 @@ def send_job_ready_email(job_card):
         recipients= [doc.customer_email],
         subject= f"Device Status: {doc.status}",
         message= f"Hi {doc.customer_name}, your device: {doc.device_type} current status: {doc.status}"
+    )
+
+# E3 - Standard Controller Pattern & override_doctype_class
+# Part A - Override your own DocType
+def send_urgent_alert(job_card, manager):
+    frappe.sendmail(
+        recipients= [manager],
+        subject= "Urgent Job Card Alert",
+        message= f"Job card {job_card} is marked urgent" 
     )
 
 # F3 jinja hooks: method to get_shop_name()
@@ -56,3 +66,24 @@ def send_job_ready_email(docname):
         subject= f"Device: {doc.device_type} status from QuickFix Service center",
         message= f"Hi {doc.customer_name}, you device: {doc.device_type}"
     )
+
+''' want to check
+# Task B - Idempotency:
+def check_low_stock():
+    last_run = frappe.db.get_value("Audit Log", {
+        "action": "low_stock_check",
+        "date": today()
+    }, "name")
+
+    if last_run:
+        return
+    
+    frappe.get_doc({
+        "doctype": "Audit Log",
+        "doctype_name": "Spare Part",
+        "document_name" : "Daily Low stock Check",
+        "action": "Low stock check",
+        "user": "Admin",
+        "timestamp": now_datetime()
+    }).insert()
+'''
