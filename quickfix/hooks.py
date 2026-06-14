@@ -131,6 +131,7 @@ jinja = {
 # after_install = "quickfix.install.after_install"
 
 # after_install = "quickfix.utils.create_device"
+after_install = "quickfix.setup.after_install.setup_quickfix"
 
 # Uninstallation
 # ------------
@@ -202,6 +203,7 @@ doc_events = {
         "on_submit": "quickfix.service_center.doctype.audit_log.audit_log.log_change",
         "on_cancel": "quickfix.service_center.doctype.audit_log.audit_log.log_change"
 	},
+    
     "Job Card": {
         "validate": "quickfix.service_center.doctype.audit_log.audit_log.log_validate"
 	}
