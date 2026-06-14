@@ -22,3 +22,21 @@ class SparePart(Document):
 
 		# make autoname
 		self.name = make_autoname("PART-.YYYY.-.####")
+
+	def on_update(self):
+		# doc = frappe.get_doc("QuickFix Settings", "QuickFix Settings")
+		# threshold = doc.low_stock_threshold
+
+		'''
+		The above one will load full document, fields, metadata, 
+		slower for simple value fetch
+		'''
+		threshold = frappe.db.get_value(
+			"QuickFix Settings",
+			None,
+			"low_stock_threshold"
+		)
+
+		'''
+		Fetches only one field which is required one, faster
+		'''
