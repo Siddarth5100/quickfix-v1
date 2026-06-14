@@ -1,5 +1,5 @@
 import frappe
-from frappe.utils import nowdate, add_days
+from frappe.utils import nowdate, add_days, now_datetime
 from frappe.query_builder import DocType
 
 # Part B - frappe.qb Query Builder
@@ -7,7 +7,7 @@ from frappe.query_builder import DocType
 @frappe.whitelist()
 def get_overdue_jobs():
     JC = DocType("Job Card")
-    cutoff_date = add_days(nowdate(), -7)
+    cutoff_date = add_days(now_datetime(), -7)
 
     overdue_jobs = (
         frappe.qb.from_(JC)
