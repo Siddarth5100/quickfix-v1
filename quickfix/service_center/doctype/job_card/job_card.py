@@ -59,6 +59,12 @@ class JobCard(Document):
 		
 			frappe.db.set_value("Spare Part", part.part, "stock_qty", final_qty)
 
+		'''
+		WHY ignore_permissions is acceptable here (system-initiated deduction, not 
+		user-initiated)
+		* Because this is done by system logic not by user manually editing 
+		'''
+
 		# auto create service invoice
 		doc = frappe.get_doc({
 			"doctype": "Service Invoice",
@@ -112,4 +118,8 @@ class JobCard(Document):
 		# prevent deletion of job cards with status != "Cancelled" & "Draft"
 		if self.status not in ["Cancelled", "Draft"]:
 			frappe.throw("Status should be either 'Cancelled' or 'Draft'")
-		
+	
+	def on_update(self):
+		# print("--------------------------On_update called")
+		# self.save()
+		pass
