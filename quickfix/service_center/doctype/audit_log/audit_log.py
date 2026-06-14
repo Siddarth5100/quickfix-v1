@@ -14,11 +14,14 @@ def log_change(doc, method):
 	if doc.doctype == "Audit Log":
 		return
 	
+	if doc.doctype not in ["Job Card", "Service Invoice", "Part Usage Entry", "Technician", "Device Type", "Spare Part", "Audit Log", "QuickFix Settings"]:
+		return
+	
 	frappe.get_doc({
 		"doctype": "Audit Log",
 		"doctype_name": doc.doctype,
 		"document_name": doc.name,
 		"action": method,
 		"user": frappe.session.user,
-		"timestamp": now_datetime()
+		"time_stamp": now_datetime()
 	}).insert()

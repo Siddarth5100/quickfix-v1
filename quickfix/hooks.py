@@ -196,13 +196,13 @@ override_doctype_class = {
 # 	}
 # }
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "quickfix.service_center.doctype.audit_log.audit_log.log_change",
-#         "on_submit": "quickfix.service_center.doctype.audit_log.audit_log.log_change",
-#         "on_cancel": "quickfix.service_center.doctype.audit_log.audit_log.log_change"
-# 	}
-# }
+doc_events = {
+	"*": {
+		"on_update": "quickfix.service_center.doctype.audit_log.audit_log.log_change",
+        "on_submit": "quickfix.service_center.doctype.audit_log.audit_log.log_change",
+        "on_cancel": "quickfix.service_center.doctype.audit_log.audit_log.log_change"
+	}
+}
 
 # Scheduled Tasks
 # ---------------
@@ -224,6 +224,12 @@ override_doctype_class = {
 # 		"quickfix.tasks.monthly"
 # 	],
 # }
+
+scheduler_events = {
+    "daily": [
+        "quickfix.utils.check_low_stock"
+	]
+}
 
 # Testing
 # -------
@@ -311,3 +317,19 @@ override_whitelisted_methods = {
 # ignore_translatable_strings_from = []
 
 extend_bootinfo = "quickfix.utils.extend_bootinfo"
+
+website_route_rules = [
+    {
+        "from_route": "/track-job", "to_route": "track-job"
+	}
+]
+
+portal_menu_items = [
+    {
+		"title": "Track My Job",
+		"route": "/track-job",
+		"reference_doctype": "Job Card",
+		"role": "Guest"
+        
+	}
+]
