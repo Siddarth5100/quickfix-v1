@@ -201,6 +201,9 @@ doc_events = {
 		"on_update": "quickfix.service_center.doctype.audit_log.audit_log.log_change",
         "on_submit": "quickfix.service_center.doctype.audit_log.audit_log.log_change",
         "on_cancel": "quickfix.service_center.doctype.audit_log.audit_log.log_change"
+	},
+    "Job Card": {
+        "validate": "quickfix.service_center.doctype.audit_log.audit_log.log_validate"
 	}
 }
 

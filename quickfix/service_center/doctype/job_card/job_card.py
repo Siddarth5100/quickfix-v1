@@ -6,6 +6,9 @@ from frappe.model.document import Document
 
 class JobCard(Document):
 	def validate(self):
+		# F1: Test purpose
+		# frappe.throw("Controller validate error")
+
 		# validate phone number length
 		if len(self.customer_phone) != 10:
 			frappe.throw("Phone number should be exact 10 digits")

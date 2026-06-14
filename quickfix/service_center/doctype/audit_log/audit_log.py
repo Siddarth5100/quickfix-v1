@@ -25,3 +25,7 @@ def log_change(doc, method):
 		"user": frappe.session.user,
 		"time_stamp": now_datetime()
 	}).insert()
+
+# F1: Test purpose
+# def log_validate(doc, method):
+# 	frappe.throw("Doc Events validate error")
