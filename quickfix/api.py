@@ -56,6 +56,8 @@ def transfer_job(from_tech, to_tech):
 @frappe.whitelist()
 def share_job_card(job_card_name, user_email):
     frappe.share.add("Job Card", job_card_name, user_email, read=1)
+    frappe.db.commit()
+
     return "Shared successfully"
 
 # In api.py, write a method that calls frappe.only_for("QF Manager")
