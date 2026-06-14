@@ -64,7 +64,25 @@ def share_job_card(job_card_name, user_email):
 @frappe.whitelist()
 def manager_call():
 	frappe.only_for("QF Manager")
+
 	return "Successful"
+
+# E2 - autoname & Renaming
+# In a utility function, call frappe.rename_doc("Technician", old_name, new_name,
+# merge=False)
+@frappe.whitelist()
+def rename_technician(old_name, new_name):
+    frappe.rename_doc(
+        "Technician", 
+        old_name,
+        new_name,
+        merge= False,
+        force= True
+    )
+    frappe.db.commit()
+
+    return f"Renamed Successfully {new_name}"
+
 
 # F4 - override_whitelisted_methods Hook
 @frappe.whitelist()
