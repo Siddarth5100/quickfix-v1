@@ -4,6 +4,8 @@
 Part A:
 * Out[16]: (('tabJob Card',), ('tabScheduled Job Log',), ('tabScheduled Job Type',))
 
+tab prefix is the tableTable_name AS Eg:tabjob Card
+
 * payment_status, delivery_date, remarks, status, reason_for_rejection
 
 ### Part D - DocStatus transitions
@@ -143,3 +145,107 @@ No index exists on the status column
 * If we want prepare immediate report with simple query, without code we can use Report builder, with single doctype
 
 * If we want full control over the report we can use the script report, calculations, python logic, dynamic columns, multiple doctypes 
+
+### K1 - Background Jobs: Queues, Timeouts, Progress
+### Task A - Queue names:
+### Que: Explain the 3 queue names (default, long, short) and when to use each
+
+### Ans:
+3 queues are default, long, short
+* short 300 sec: if it is small work like notifications, confirmantions not time taking process will add in short
+* long 1500 sec: if it is time taking work like employees salary update will add it in long queue
+* default 300 sec: this is for normal not less or time taking process
+
+### L1 - REST Resource API & Custom API
+### Task A - Resource API
+* GET /api/resource/Job Card - list Job Cards (use session cookie from browser)
+method: GET
+url: http://quickfix-dev.localhost:8002/api/resource/Job Card
+headers
+key => Cookie
+(session cookie => open job card list => console(fn+f12) => network => refresh
+=> click on any request =>  Request header => Cookie)
+value => sid=827a6ebea4093e2150086ed90554acc805efe3013c544162e93ebd5a
+key => Content Type
+value => application/json 
+body => raw json
+
+request: http://quickfix-dev.localhost:8002/api/resource/Job Card
+
+response: 
+{
+    "data": [
+        {
+            "name": "JC-2026-00002"
+        },
+    ]
+}
+
+* GET /api/resource/Job Card/JC-0001
+key: X-Frappe-CSRF-Token value: 15a4de1fa0233c9f71db2b0c1c4e0fcd54d9027c81daa598ceeb54b6
+ 
+request: http://quickfix-dev.localhost:8002/api/resource/Job Card/JC-2026-00029
+
+response: --
+
+for post, put, delete : if get basic authentication is fine, but if it is put, post, delete we want to csrf token
+
+* POST /api/resource/Spare Part
+key: X-Frappe-CSRF-Token 
+value: 15a4de1fa0233c9f71db2b0c1c4e0fcd54d9027c81daa598ceeb54b6
+
+request: http://quickfix-dev.localhost:8002/api/resource/Spare Part
+
+response:
+{
+    "part_name": "Head set",
+    "part_code": "PART-035",
+    "compatible_device_type": "Tablet",
+    "unit_cost" : 2000,
+    "selling_price": 3000,
+    "stock_qty": 30
+}
+
+* PUT /api/resource/Spare Part/PART-0001
+key: X-Frappe-CSRF-Token (Headers)
+value: 15a4de1fa0233c9f71db2b0c1c4e0fcd54d9027c81daa598ceeb54b6
+
+request: http://quickfix-dev.localhost:8002/api/resource/Spare Part/PART-2026-0002
+{
+    "selling_price": 3000
+}
+
+response:
+{
+    "data": {
+        "name": "PART-2026-0002",
+        "owner": "Administrator",
+        "creation": "2026-06-10 18:57:24.471575",
+        "modified": "2026-06-10 23:21:49.484067",
+        "modified_by": "Administrator",
+        "docstatus": 0,
+        "idx": 0,
+        "part_name": "Head set",
+        "part_code": "PART-035",
+        "compatible_device_type": "Tablet",
+        "unit_cost": 2000.0,
+        "selling_price": 3000.0,
+        "stock_qty": 30.0,
+        "reorder_level": 5.0,
+        "is_active": 1,
+        "doctype": "Spare Part"
+    }
+}
+
+* DELETE /api/resource/Spare Part/PART-0001
+key: X-Frappe-CSRF-Token (Headers)
+value: 15a4de1fa0233c9f71db2b0c1c4e0fcd54d9027c81daa598ceeb54b6
+
+request:
+http://quickfix-dev.localhost:8002/api/resource/Spare Part/ags3nqjfrf
+
+response:
+{
+    "data": "ok"
+}
+
