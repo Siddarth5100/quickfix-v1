@@ -45,9 +45,22 @@ def session_creation_logs():
 
     frappe.get_doc({
         "doctype": "Audit Log",
-        "doctype_name": "Session Creation Log",
+        "doctype_name": "Creation Log",
         "document_name": "Session Creation",
         "action": "on_session_creation",
+        "user": user,
+        "time_stamp": now_datetime()
+    }).insert()
+
+# on_logout:
+def session_logout_logs():
+    user = frappe.session.user
+
+    frappe.get_doc({
+        "doctype": "Audit Log",
+        "doctype_name": "Logout Log",
+        "document_name": "Session Logout",
+        "action": "on_logout",
         "user": user,
         "time_stamp": now_datetime()
     }).insert()
