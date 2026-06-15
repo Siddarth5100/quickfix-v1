@@ -23,3 +23,17 @@ def setup_quickfix():
         }).insert(ignore_permissions= True)
     
     frappe.msgprint("Created Device types, and basic settings")
+
+# F2 - Install, Boot & Session Hooks
+def before_uninstall():
+    check_job_cards()
+
+# Checks if any submitted Job Cards exist (before uninstall)
+def check_job_cards():
+    doc = frappe.get_all(
+        "Job Card",
+        {"docstatus": 1}
+    )
+
+    if doc:
+        raise frappe.ValidationError("Submitted Job Cards exist")

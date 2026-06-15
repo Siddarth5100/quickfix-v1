@@ -139,6 +139,9 @@ after_install = "quickfix.setup.after_install.setup_quickfix"
 # before_uninstall = "quickfix.uninstall.before_uninstall"
 # after_uninstall = "quickfix.uninstall.after_uninstall"
 
+before_uninstall = "quickfix.setup.before_uninstall"
+# after_uninstall = "quickfix.uninstall.after_uninstall"
+
 # Integration Setup
 # ------------------
 # To set up dependencies/integrations with other apps
