@@ -341,3 +341,5 @@ portal_menu_items = [
         
 	}
 ]
+
+on_session_creation = "quickfix.setup.session_creation_logs"

@@ -1,4 +1,5 @@
 import frappe
+from frappe.utils import now_datetime
 
 def setup_quickfix():
     # default devices
@@ -37,3 +38,16 @@ def check_job_cards():
 
     if doc:
         raise frappe.ValidationError("Submitted Job Cards exist")
+
+# on_session_creation:
+def session_creation_logs():
+    user = frappe.session.user
+
+    frappe.get_doc({
+        "doctype": "Audit Log",
+        "doctype_name": "Session Creation Log",
+        "document_name": "Session Creation",
+        "action": "on_session_creation",
+        "user": user,
+        "time_stamp": now_datetime()
+    }).insert()
