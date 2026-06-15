@@ -65,7 +65,7 @@ fixtures = [
 # app_include_css = "/assets/quickfix/css/quickfix.css"
 # app_include_js = "/assets/quickfix/js/quickfix.js"
 
-# app_include_js = "quickfix/public/js/quickfix.js"
+app_include_js = "/assets/quickfix/js/quickfix.js"
 
 # include js, css files in header of web template
 # web_include_css = "/assets/quickfix/css/quickfix.css"
