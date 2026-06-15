@@ -1,5 +1,6 @@
 import frappe
 from frappe.utils import today, now_datetime
+from quickfix.setup import setup_quickfix
 
 def create_device():
     pass
@@ -47,6 +48,12 @@ def format_job_id(job_id):
 
 # F5 - Fixtures & Property Setters in Install
 def after_install():
+    setup_quickfix()
+    make_field_bold()
+
+# after_install, call frappe.make_property_setter to make the remarks field bold on 
+# Job Card
+def make_field_bold():
     frappe.make_property_setter(
         {
             "doctype": "Job Card",

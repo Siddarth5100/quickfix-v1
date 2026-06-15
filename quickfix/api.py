@@ -83,7 +83,6 @@ def rename_technician(old_name, new_name):
 
     return f"Renamed Successfully {new_name}"
 
-
 # F4 - override_whitelisted_methods Hook
 @frappe.whitelist()
 def custom_get_count(doctype, filters = None, debug = False, cache = False):

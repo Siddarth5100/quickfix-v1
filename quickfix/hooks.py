@@ -131,7 +131,7 @@ jinja = {
 # after_install = "quickfix.install.after_install"
 
 # after_install = "quickfix.utils.create_device"
-after_install = "quickfix.setup.after_install.setup_quickfix"
+after_install = "quickfix.utils.after_install"
 
 # Uninstallation
 # ------------
