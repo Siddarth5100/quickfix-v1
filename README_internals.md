@@ -43,6 +43,79 @@ ValidationError: Cannot edit cancelled document
 * If the user is manager will receive the success response
 * If the user in non-manager will receive PermissionError
 
+### E1 - Complete Job Card Lifecycle
+### on_update() - demonstrate the recursion pitfall:
+### Call self.save() inside on_update and see to the issues of it and explain
+
+* Calling self.save() inside on_update causes recursion
+
+save() triggers on_update(),
+if on_update() calls save() again, the document enter in infinite loop of save and update
+
+correct pattern self.db_set() or self.db.set_value()
+
+error : 22:12:46 web.1         | RecursionError: maximum recursion depth exceeded
+
+### E2 - autoname & Renaming
+### Que: In a utility function, call frappe.rename_doc("Technician", old_name, new_name, merge=False) and show how linked fields (assigned_technician on Job Cards) are updated automatically
+
+### Ans:
+frappe.rename_doc() automatically updates all link fields to the renamed document
+
+### Que: when would merge=True be dangerous?
+
+### Ans:
+* merge+True is dangerous because 2 records become one record,
+which can lead to accidental data mixing or loss
+
+### E3 - Standard Controller Pattern & override_doctype_class
+### Part B - Upgrade friction analysis:
+### Que: Assume the Frappe core updates Job Card's validate() to add a new check. If you override_doctype_class and forget to update super() - what breaks?
+
+### Ans:
+* If we forgot to add super(), core we have some validations that will not happen, only the current file will run
+
+Eg:
+class CustomJobCard(JobCard):
+    def validate(self):
+        self._check_urgent_unassigned()
+    
+    def _check_urgent_unassigned(self):
+        if self.priority == "Urgent" and not self.assigned_technician:
+            settings = frappe.get_single("QuickFix Settings")
+            frappe.enqueue(
+                "quickfix.utils.send_urgent_alert",
+                job_card = self.name,
+                manager= settings.manager_email    
+            )
+
+here i created a file to override jobcard and i dint add super(), but i have some other important validations in core, while running frappe sees hooks file and there will be path to this method, so that will excute only this. 
+
+### Que:
+### Explain in README_internals.md: why is doc_events safer than override_doctype_class for most use cases?
+
+### Ans:
+Docevents is safer because it only adds extra behaviour on top of existing Doctype events (Eg: validate, on_submit) without changing the original core logic.
+
+Override doctype class is riskier because it replace or extends the full class. If core doctype change and forgot to call super(), core validations may skipped
+
+### F1 - doc_events: Wildcard, Multiple Handlers, Order
+### Task B - Multiple handler conflict:
+### Que: Register TWO validate handlers on Job Card - one in your main controller and one in doc_events.
+
+### Ans: 
+Main controller runs 1st then doc events runs, if both raise validation error, controller throws error and docevents also throws error, 
+Executioin stops at 1st error, second handler never runs
+
+### Que: Demonstrate: what happens when you register "*" AND a specific DocType handler for the same event? Do both run?
+
+### Ans:
+Both runs, 
+"*" handler runs (Audit log)
+"Job Card" handler runs (validate / custom logic)
+
+wildcard runs for every doctype, specific hook runs only for Job Card
+
 ### F3 - Asset, Jinja & Website Hooks
 
 ### Asset Hooks
@@ -72,6 +145,27 @@ Print format works on for a specific document, we can directly access the fields
 
 Web page is not related to any document => page/context
 
+### F5 - Fixtures & Property Setters in Install
+### Que: Explain fieldname collision risk: what happens if your Custom Field has the same fieldname as a field added by a future Frappe update?
+
+### Ans:
+Eg: custom field = "status" ; future frappe update adds "status" field
+
+then, field definition conflict, UI behave unexpectedly, 
+data mismatch or overwrite risk, migration error happens during
+update/patch 
+
+### Que: Explain patching order: if Patch 1 creates a Custom Field and Patch 2 reads it, why must they be separate entries in patches.txt and never merged?
+
+### Ans:
+Patch = is a python script designed to execute exactly once during database migrations
+
+Developers use patches to update database schema, migrate existing data or fix inconsistencies across live sites without breaking production data.
+
+Patch 1 = creates custom field
+Patch 2 = uses that field
+
+if we merge both run in one go, run one by one 
 
 ### H3 - List View & Tree View
 ### Que: Describe what a Tree DocType is (example: Account,Employee hierarchy). What is doctype_tree_js used for and what extra fields does a tree DocType require (parent_field, is_group)?
