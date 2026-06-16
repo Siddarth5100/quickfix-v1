@@ -8,7 +8,8 @@
   "shop_name",
   "manager_email",
   "default_labour_charge",
-  "low_stock_alert_enabled"
+  "low_stock_alert_enabled",
+  "webhook_url"
  ],
  "fields": [
   {
@@ -34,13 +35,18 @@
    "fieldname": "low_stock_alert_enabled",
    "fieldtype": "Check",
    "label": "Low Stock Alert Enabled"
+  },
+  {
+   "fieldname": "webhook_url",
+   "fieldtype": "Data",
+   "label": "Webhook URL"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-06-01 17:11:01.450666",
+ "modified": "2026-06-15 18:49:36.298209",
  "modified_by": "Administrator",
  "module": "Service Center",
  "name": "QuickFix Settings",
