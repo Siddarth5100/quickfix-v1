@@ -95,6 +95,15 @@ class JobCard(Document):
 			queue= "short"
 		)
 
+		# L2 - Webhooks: Outgoing & Incoming
+		# Task A - Outgoing Webhook:
+		frappe.enqueue(
+			"quickfix.utils.send_webhook",
+			job_card_name= self.name,
+			queue= "short",
+			job_name= f"Webhook Test {self.name}"
+		)
+
 	def on_cancel(self):
 		# Set status = "Cancelled"
 		self.db_set("status", "Cancelled")

@@ -1,6 +1,7 @@
 import frappe
 from frappe.utils import today, now_datetime
 from quickfix.setup import setup_quickfix
+import requests, json
 
 def create_device():
     pass
@@ -94,3 +95,26 @@ def check_low_stock():
         "timestamp": now_datetime()
     }).insert()
 '''
+
+# L2 - Webhooks: Outgoing & Incoming
+# Task A - Outgoing Webhook:
+def send_webhook(job_card_name):
+    settings = frappe.get_single("QuickFix Settings")
+    print(settings.webhook_url)
+    
+    if not settings.webhook_url:
+        return
+
+    doc = frappe.get_doc("Job Card", job_card_name)
+    payload = {
+        "event": "job_submitted",
+        "job_card": doc.name,
+        "amount": doc.final_amount
+    }
+
+    try:
+        r = requests.post(settings.webhook_url, json=payload, timeout=5)
+        r.raise_for_status()
+
+    except Exception as e:
+        frappe.log_error(f"Webhook failed: {e}", "Webhook Error")
