@@ -18,6 +18,19 @@ frappe.realtime.on("job_ready", function(data) {
 // H1 - Job Card Form Script
 // setup handler: assign technician based on the matching specilization
 frappe.ui.form.on("Job Card", {
+    // H1 - Job Card Form Script (Observation Task)
+    // Making a frappe.call inside the validate client
+    // validate(frm) {
+    //     console.log("1. validate started")
+    //     frappe.call({
+    //         method: "quickfix.api.test_method",
+    //         callback: function(r) {
+    //             console.log("3. callback finishes")
+    //         }
+    //     });
+    //     console.log("2. validate ended")
+    // },
+
     setup(frm) {
         // filter technician
         frm.set_query("assigned_technician", function() {

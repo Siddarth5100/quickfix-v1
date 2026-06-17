@@ -103,6 +103,16 @@ def add_rejection_update():
     # want to add logic here
     pass
 
+'''
+# H1 - Job Card Form Script
+# Making a frappe.call inside the validate client
+@frappe.whitelist()
+def test_method():
+    import time
+    time.sleep(5)
+    return "Test method validate process"
+'''
+
 # L1 - REST Resource API & Custom API
 # Task C - Custom whitelisted method design:
 @frappe.whitelist()
@@ -167,3 +177,4 @@ def payment_webhook():
     return {
         "status": "ok"
     }
+
