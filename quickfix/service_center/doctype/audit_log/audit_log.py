@@ -11,6 +11,8 @@ class AuditLog(Document):
 # F1 - doc_events: Wildcard, Multiple Handlers, Order (5 pts)
 # Task A - Wildcard handler:
 def log_change(doc, method):
+	# frappe.log_error(f"Wildcard triggered: {doc.doctype}-{method}")
+
 	if doc.doctype == "Audit Log":
 		return
 	
@@ -26,6 +28,8 @@ def log_change(doc, method):
 		"time_stamp": now_datetime()
 	}).insert()
 
-# F1: Test purpose
-# def log_validate(doc, method):
-# 	frappe.throw("Doc Events validate error")
+def log_validate(doc, method):
+	# F1: Test purpose
+	# frappe.throw("Doc Events validate error")
+	# frappe.log_error("Job Card validate triggered")
+	pass
