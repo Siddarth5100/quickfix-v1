@@ -71,6 +71,8 @@ app_include_js = "/assets/quickfix/js/quickfix.js"
 # web_include_css = "/assets/quickfix/css/quickfix.css"
 # web_include_js = "/assets/quickfix/js/quickfix.js"
 
+web_include_js = "/assets/quickfix/js/web.js"
+
 # include custom scss in every website theme (without file extension ".scss")
 # website_theme_scss = "quickfix/public/scss/website"
 
