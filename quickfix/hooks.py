@@ -338,7 +338,7 @@ extend_bootinfo = "quickfix.utils.extend_bootinfo"
 
 website_route_rules = [
     {
-        "from_route": "/track-job", "to_route": "track-job"
+        "from_route": "/track-job", "to_route": "Job Card"
 	}
 ]
 
