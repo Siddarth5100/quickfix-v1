@@ -2,6 +2,7 @@ import frappe
 from frappe.utils import today, now_datetime
 from quickfix.setup import setup_quickfix
 import requests, json
+from datetime import timedelta
 
 def create_device():
     pass
@@ -98,10 +99,9 @@ def check_low_stock():
 
 # L2 - Webhooks: Outgoing & Incoming
 # Task A - Outgoing Webhook:
-def send_webhook(job_card_name):
+def send_webhook(job_card_name, retry_count=0):
     settings = frappe.get_single("QuickFix Settings")
-    print(settings.webhook_url)
-    
+
     if not settings.webhook_url:
         return
 
@@ -112,9 +112,22 @@ def send_webhook(job_card_name):
         "amount": doc.final_amount
     }
 
+    if retry_count >= 3:
+        return {
+            "error": "count exceeds"
+        }
+
     try:
         r = requests.post(settings.webhook_url, json=payload, timeout=5)
         r.raise_for_status()
 
     except Exception as e:
+        retry_count += 1
+
+        frappe.enqueue(
+            "quickfix.utils.send_webhook",
+            job_card_name = job_card_name,
+            retry_count = retry_count
+        )
+        
         frappe.log_error(f"Webhook failed: {e}", "Webhook Error")
