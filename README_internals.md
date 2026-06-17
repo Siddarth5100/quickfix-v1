@@ -134,6 +134,25 @@ wildcard runs for every doctype, specific hook runs only for Job Card
 ### Ans:
 * Job card is not tree type, it is submittable doctype where tree type will not support  
 
+### Que: Build cache-busting: explain what bench build --app quickfix does and why assets need cache-busting after JS changes
+
+### Ans:
+
+bench build --app, 
+converts /public/js to /assets, bundles files, update changes happend in .js files for frontend. Because browser caches old JS file, changes maynot reflect.
+
+cache busting: after changes
+bench clear-cache
+bench build
+bench restart
+
+app_include_js => Desk global JS
+web_include_js => Website/ portal JS
+
+doctype_js => Form level JS
+doctype_list_js => List view JS
+doctype_tree_js => Hierarichal Doctypes
+
 ### Jinja Hooks
 
 ### Que: Difference between a Jinja context available in Print Formats vs one available in Web Pages? Are they the same?
@@ -141,9 +160,34 @@ wildcard runs for every doctype, specific hook runs only for Job Card
 ### Ans:
 Both are different,
 
+Print Format: document based context (doc already available)
+(One record view) doc
+Eg: {{ doc.customer }}, {{ doc.total_amount }}
+
 Print format works on for a specific document, we can directly access the fields => document genric
 
+Web Pages: system + session +dynamic data context
+(Full website environment) not tied to single document
+uses frappe.get_all, .db, .session
+Eg: {{ frappe.session.user }}, {{ get_shop_name() }}
+
 Web page is not related to any document => page/context
+
+### F4 - override_whitelisted_methods Hook
+### Que: confirm the override is called, confirm the original logic still returns the correct count, confirm no other app's calls to frappe.client.get_count are broken
+
+### Ans:
+Test in postman:
+
+http://quickfix-dev.localhost:8002//api/method/frappe.client.get_count?doctype=Job Card
+
+returns the count of total docs in the doctype, dint breack for others 
+
+### Que: What happens if TWO apps both register override_whitelisted_methods for the same method? Write the answer.
+
+### Ans:
+Only one can work, based on the app loading order(apps.txt)
+The later loaded app works(precedence)
 
 ### F5 - Fixtures & Property Setters in Install
 ### Que: Explain fieldname collision risk: what happens if your Custom Field has the same fieldname as a field added by a future Frappe update?
@@ -166,6 +210,29 @@ Patch 1 = creates custom field
 Patch 2 = uses that field
 
 if we merge both run in one go, run one by one 
+
+### H1 - Job Card Form Script
+### Que: Making a frappe.call inside the validate client event (before_save handler) - explain why this does not work
+
+### Ans:
+frappe.call({}) => works asynchronously, where as validate runs immediately, validate will not wait till callback receives
+
+Eg: 
+Save starts
+Validate ends
+Document may already save
+Server response comes later
+Callback runs later
+
+### Que: Using onload or refresh for async data fetches
+Because these events are for loading data into the UI, No save happens, No validation waiting,
+
+Eg:
+Open Job Card
+Refresh runs
+Frappe.call goes to server
+Response comes back
+Field gets updated
 
 ### H3 - List View & Tree View
 ### Que: Describe what a Tree DocType is (example: Account,Employee hierarchy). What is doctype_tree_js used for and what extra fields does a tree DocType require (parent_field, is_group)?
