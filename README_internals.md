@@ -343,3 +343,52 @@ response:
     "data": "ok"
 }
 
+### Task B - Token Authentication (API key + secret):
+### Que: 
+### Generate an API key and secret for your test user (User - API Access)
+
+### Ans:
+goto => user => open test user => settings => api access => generate keys
+copy keys and use in the below format
+token API key: API secret
+
+### Que:
+### Make a curl request with: Authorization: token api_key:api_secret
+
+### Ans:
+goto postman, choose method, enter url, in headers use 
+key: Authorization
+Value: token API key value:API secret key value
+
+### L2 - Webhooks: Outgoing & Incoming
+### Task B - Incoming Webhook Endpoint:
+
+### Que:
+### why must you use hmac.compare_digest instead of == for signature comparison? (Timing attack prevention)
+
+### Ans:
+* == is normal comparison Eg: a == b
+Python compares character by character, it stop early when mismatch is found. 
+This creates time difference, correct part takes longer
+wrong early returns faster, where hackers can measure this time
+this is called timing attack(measures exactly how long a system takes to process a specific input)
+
+* hmac.compare_digest(a, b)
+compares in fixed time, always checks full string, no early exit
+
+signature = security proof so we want to use hmac.compare_digest
+
+### Que:
+### Explain the deduplication strategy: what happens if the payment gateway sends the same event twice?
+
+### Ans:
+* without deduplication
+Payment gateway may send same webhook twice,
+Payment success (PAY-001) => mark invoice PAID
+sent to frappe
+Sent again (retry/ network issue) => again mark PAID / create duplicate entry
+
+This causes; duplicate invoices, double updates, wrong accounting
+
+* with deduplication
+Before processing, checks in db is there any log, if already exists process will not happen again, if not will proceed the process

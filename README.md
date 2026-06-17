@@ -102,9 +102,10 @@ It contains the current logged in user
 
 ### L1 - REST Resource API & Custom API
 ### Task B - Token Authentication
-### Que: Explain in README: what is the difference between session cookie auth and token auth
+### Que: Explain in README: what is the difference between session cookie auth and token auth Which is appropriate for browser use and which for server-to-server?
 
 ### Ans:
 * session cookie does not have more permission, only we can get the details already exist
 * where token auth have more authorization where we can do all the methods(get, put, post, delete)
 
+* for browser use session cookie and for server to server use token
