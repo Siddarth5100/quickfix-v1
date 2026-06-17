@@ -1,6 +1,7 @@
 import frappe
 from frappe.utils import nowdate, add_days, now_datetime
 from frappe.query_builder import DocType
+import hmac, hashlib, json
 
 # Part B - frappe.qb Query Builder
 # Write a function get_overdue_jobs() using frappe.qb
@@ -125,4 +126,43 @@ def get_job_summary():
         "customer_name": doc.customer_name,
         "assigned_technician": doc.assigned_technician,
         "device_type": doc.device_type
+    }
+
+# L2 - Webhooks: Outgoing & Incoming
+# Task B - Incoming Webhook Endpoint:
+@frappe.whitelist(allow_guest=True)
+def payment_webhook():
+    # 1.Read raw req body
+    payload = frappe.request.data
+
+    # 2.Validate HMAC signature
+    secret = frappe.conf.get("payment_webhook_secret", "")
+    signature = frappe.get_request_header("X-Signature")
+    expected = hmac.new(secret.encode(), payload, hashlib.sha256).hexdigest()
+
+    if not hmac.compare_digest(expected, signature or ""):
+        frappe.throw("Invalid signature", frappe.AuthenticationError)
+    
+    # 3.Parse payload
+    data = json.loads(payload)
+
+    # 4.Deduplication check
+    if frappe.db.exists("Audit Log",        
+        {
+            "action": "payment_received",
+            "document_name": data["ref"]
+        }):
+        
+        return {
+            "status": "duplicate",
+            "message": "Already processed"
+        }
+    
+    # 5.Update Job Card/ Service invoice payment status
+    # 6.Log to Audit Log
+
+    frappe.db.commit()
+    
+    return {
+        "status": "ok"
     }
