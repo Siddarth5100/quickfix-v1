@@ -90,6 +90,7 @@ def custom_get_count(doctype, filters = None, debug = False, cache = False):
     frappe.get_doc({
         "doctype": "Audit Log",
         "doctype_name": doctype,
+        "document_name": doctype,
         "action": "count_queried",
         "user": frappe.session.user
     }).insert(ignore_permissions = True)
