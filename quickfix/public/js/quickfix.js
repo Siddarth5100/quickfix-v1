@@ -1,3 +1,4 @@
+console.log("Desk Js Loaded")
 
 // F2 - Install, Boot & Session Hooks
 // extend_bootinfo:
