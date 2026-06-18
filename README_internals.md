@@ -300,6 +300,43 @@ ouput:
 
 No index exists on the status column
 
+### Que: I4 - Prepared Report
+### explain when you would use a Prepared Report vs a real-time Script Report. What are the staleness tradeoffs
+
+### Ans
+Prepared report,
+If it is large dataset, will use Prepared report
+
+Realtime script report.
+If it is small data, will use relatime script report
+
+Staleness trade offs,
+As this is cached data, wil not be always upto date
+
+Eg: 
+Data is computed once in background
+Stored in cache
+UI shows cached result
+
+Problem: If data changes after caching - user still sees old data
+
+Script Report
+Runs SQL every time user opens report
+Always fresh data
+
+### Que: Describe the caching risk: if underlying data changes between report preparations, what does the user see?
+
+### Ans: 
+Eg: 
+Report generated => Total jobs = 100
+New Job added => Total jobs becomes 120 in DB
+User opens report => Still shows 100(cached)
+
+This is the caching risk, report becomes inconsistent with real database state.
+
+As the results are precomputed and stored in cache, any changes underlying database after report generated not immediately reflected. As a result users may see outdated or inconsistent data,
+until the report is regenerated or refreshed.
+ 
 ### I5 - Report Builder & Custom Report
 ### Que: when is Report Builder appropriate? When must you use Script Report?
 
@@ -316,6 +353,29 @@ No index exists on the status column
 * short 300 sec: if it is small work like notifications, confirmantions not time taking process will add in short
 * long 1500 sec: if it is time taking work like employees salary update will add it in long queue
 * default 300 sec: this is for normal not less or time taking process
+
+### K3 - Performance Engineering
+
+### Task A - N+1 query detection and fix:
+The following code has an N+1 query problem. Identify it and rewrite it:
+
+### Ans:
+raw sql(for reference)
+SELECT T.technician_name, T.phone
+FROM `tabJob card` AS JC
+RIGHT JOIN `tabTechnician` AS T
+ON JC.assigned_technician = T.name
+
+result = frappe.db.sql("""
+    SELECT
+        t.technician_name,
+        t.phone
+    FROM `tabJob Card` jc
+    RIGHT JOIN `tabTechnician` t
+    ON jc.assigned_technician = t.name
+"""), as-dict=True
+
+N+1 query makes the DB performance makes slower.
 
 ### L1 - REST Resource API & Custom API
 ### Task A - Resource API
@@ -459,3 +519,87 @@ This causes; duplicate invoices, double updates, wrong accounting
 
 * with deduplication
 Before processing, checks in db is there any log, if already exists process will not happen again, if not will proceed the process
+
+### M1 - Server Script DocType
+### Que: What Python functions/modules are blocked in the Server Script sandbox?
+
+### Ans:
+server scripts run in a restricted environment
+
+commonly blocked;
+import os, subprocess, socket, requests
+open(), eval(), exec(), __import__() 
+
+and many other unsafe modules, functions. To prevent file, system, network access etc.
+
+Error:
+"exception": "ImportError: __import__ not found",
+"exc_type": "ImportError",
+
+### Que: List 3 things you CANNOT do in a Server Script that you can do in app code.
+
+### Ans:
+Import packages, functions, accessing files in system, app hooks etc
+
+app code, we can controll fully using python
+
+### Que: Give 2 scenarios where Server Scripts are acceptable, and 2 where you should insist on app code instead
+
+### Ans:
+* Server scripts are acceptable in small conditions, buisness rules configure quickly without deploying app code
+* Simple data fetch, field updates, validations
+
+App code,
+* If we want full control over the files will use app code
+* If we want to import libraries, do complex buisness logics, integrations, proper version control etc
+
+### Que: What is the governance/maintainability risk of Server Scripts?
+
+### ans:
+Server scripts are powerful as they allow buisness logic, to be added directly without touching the code, where the risk is it is not code based, it stores only in DB. Not tracked in Git.   
+
+### M2 - Caching, Redis & Cache Invalidation
+### Task A - What Frappe caches (bench console exploration):
+
+bootinfo = data loaded when desk starts, frappe caches it doesn't rebuild every request
+
+### Que: Run: frappe.cache.get_value("bootinfo") - what does it contain?
+
+frappe.cache().get_keys("*boot*")/ frappe.cache().redis_client.keys("*boot*")
+=> to get keys actually exist in site
+
+out: [b'_38dc3d6fcdc6ed6c|bootinfo']
+
+### Ans:
+bootinfo contains the data required to initialize the frappe desk when user logs in.
+It includes info, permisssions, defaults etc
+
+### Que: Run: frappe.cache.get_value("quickfix:translations") or similar - find where translations are cached
+
+### Ans:
+In [6]: frappe.cache().get_keys("*translation*")
+out:
+[b'_38dc3d6fcdc6ed6c|merged_translations',
+ b'_38dc3d6fcdc6ed6c|lang_user_translations']
+
+### Que: Run frappe.clear_cache() and observe what changes in the browser
+
+### Ans:
+clears frappe's cached data from redis, 
+user opens desk, frappe redis cached bootinfo, metadata, permissions etc
+
+after, cache entries are removed, next request rebuilds them, stores them back in cache
+
+### Que: Frappe caches in Redis (bootinfo, DocType metadata/meta, website context, translations, user permissions)
+
+### Ans:
+Frappe caches:
+Boot info
+Doctype Metadata
+Translations
+User Permissions
+Website context
+
+Inspected Redis cache using 
+frape.cache().get_keys(), frappe.clear_cache() followed by browser refresh 
+
