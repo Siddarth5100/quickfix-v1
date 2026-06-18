@@ -19,5 +19,28 @@ frappe.query_reports["Technician Performance"] = {
 			fieldtype: "Link",
 			options: "Technician"
 		}
-	]
+	],
+
+	onload: function(report) {
+		set_default_dates(report);
+	},
+
+	refresh: function(report) {
+		set_default_dates(report);
+	}
 };
+
+function set_default_dates(report) {
+	let from_date = report.get_filter_value("from_date");
+	let to_date = report.get_filter_value("to_date");
+
+	if(!from_date && !to_date) {
+		let today = frappe.datetime.get_today();
+
+		let first_day = frappe.datetime.get_first_day(today);
+		let last_day = frappe.datetime.get_last_day(today);
+
+		report.set_filter_value("from_date", first_day);
+		report.set_filter_value("to_date", last_day)
+	}
+}
