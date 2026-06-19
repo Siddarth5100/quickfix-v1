@@ -113,6 +113,11 @@ def enqueue_monthly_report():
         year= 2026
     )
 
+# Task D - Job failure handling:
+'''def test_fail_job():
+    raise Exception("Job Crashed intentionally")
+'''
+    
 # L2 - Webhooks: Outgoing & Incoming
 # Task A - Outgoing Webhook:
 def send_webhook(job_card_name, retry_count=0):
