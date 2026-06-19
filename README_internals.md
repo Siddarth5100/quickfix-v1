@@ -1,3 +1,82 @@
+### B1 - Trace a Request End-to-End
+### Step 3 - Error visibility
+
+### developer mode 1
+1         | Traceback (most recent call last):
+15:56:59 web.1         |   File "apps/frappe/frappe/app.py", line 120, in application
+15:56:59 web.1         |     response = frappe.api.handle(request)
+15:56:59 web.1         |                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+15:56:59 web.1         |   File "apps/frappe/frappe/api/__init__.py", line 52, in handle
+15:56:59 web.1         |     data = endpoint(**arguments)
+15:56:59 web.1         |            ^^^^^^^^^^^^^^^^^^^^^
+15:56:59 web.1         |   File "apps/frappe/frappe/api/v1.py", line 40, in handle_rpc_call
+15:56:59 web.1         |     return frappe.handler.handle()
+15:56:59 web.1         |            ^^^^^^^^^^^^^^^^^^^^^^^
+15:56:59 web.1         |   File "apps/frappe/frappe/handler.py", line 53, in handle
+15:56:59 web.1         |     data = execute_cmd(cmd)
+15:56:59 web.1         |            ^^^^^^^^^^^^^^^^
+15:56:59 web.1         |   File "apps/frappe/frappe/handler.py", line 86, in execute_cmd
+15:56:59 web.1         |     return frappe.call(method, **frappe.form_dict)
+15:56:59 web.1         |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+15:56:59 web.1         |   File "apps/frappe/frappe/__init__.py", line 1760, in call
+15:56:59 web.1         |     return fn(*args, **newargs)
+15:56:59 web.1         |            ^^^^^^^^^^^^^^^^^^^^
+15:56:59 web.1         |   File "apps/frappe/frappe/utils/typing_validations.py", line 32, in wrapper
+15:56:59 web.1         |     return func(*args, **kwargs)
+15:56:59 web.1         |            ^^^^^^^^^^^^^^^^^^^^^
+15:56:59 web.1         |   File "apps/quickfix/quickfix/api.py", line 191, in test_error
+15:56:59 web.1         |     raise Exception("Test Error")
+15:56:59 web.1         | Exception: Test Error
+15:56:59 web.1         | 
+
+### developer mode 0
+1         | Traceback (most recent call last):
+15:56:59 web.1         |   File "apps/frappe/frappe/app.py", line 120, in application
+15:56:59 web.1         |     response = frappe.api.handle(request)
+15:56:59 web.1         |                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+15:56:59 web.1         |   File "apps/frappe/frappe/api/__init__.py", line 52, in handle
+15:56:59 web.1         |     data = endpoint(**arguments)
+15:56:59 web.1         |            ^^^^^^^^^^^^^^^^^^^^^
+15:56:59 web.1         |   File "apps/frappe/frappe/api/v1.py", line 40, in handle_rpc_call
+15:56:59 web.1         |     return frappe.handler.handle()
+15:56:59 web.1         |            ^^^^^^^^^^^^^^^^^^^^^^^
+15:56:59 web.1         |   File "apps/frappe/frappe/handler.py", line 53, in handle
+15:56:59 web.1         |     data = execute_cmd(cmd)
+15:56:59 web.1         |            ^^^^^^^^^^^^^^^^
+15:56:59 web.1         |   File "apps/frappe/frappe/handler.py", line 86, in execute_cmd
+15:56:59 web.1         |     return frappe.call(method, **frappe.form_dict)
+15:56:59 web.1         |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+15:56:59 web.1         |   File "apps/frappe/frappe/__init__.py", line 1760, in call
+15:56:59 web.1         |     return fn(*args, **newargs)
+15:56:59 web.1         |            ^^^^^^^^^^^^^^^^^^^^
+15:56:59 web.1         |   File "apps/frappe/frappe/utils/typing_validations.py", line 32, in wrapper
+15:56:59 web.1         |     return func(*args, **kwargs)
+15:56:59 web.1         |            ^^^^^^^^^^^^^^^^^^^^^
+15:56:59 web.1         |   File "apps/quickfix/quickfix/api.py", line 191, in test_error
+15:56:59 web.1         |     raise Exception("Test Error")
+15:56:59 web.1         | Exception: Test Error
+15:56:59 web.1         | 
+
+### browser receives:
+Full traceback shown in UI
+File path: apps/quickfix/api.py
+Exact exception message
+
+### developer_mode
+generic response
+No full trace back shown in UI
+
+### Que: Where do production errors go if they are hidden from the browser?
+
+### Ans: save in 3 places
+Error log, server logs, Bg failure logs(RQ)
+
+### Step 4 - Permission check location:
+### Que: In a whitelisted method, call frappe.get_doc("Job Card", name) WITHOUT ignore_permissions.
+
+If user dont have permission will get the error,
+
+User suresh@gmail.com does not have doctype access via role permission for document Job Card
 
 ### B2 - ORM Internals & Query Builder
 
@@ -361,6 +440,28 @@ until the report is regenerated or refreshed.
 * short 300 sec: if it is small work like notifications, confirmantions not time taking process will add in short
 * long 1500 sec: if it is time taking work like employees salary update will add it in long queue
 * default 300 sec: this is for normal not less or time taking process
+
+### Que: Explain retry behavior: how many times does Frappe retry a failed background job by default?
+
+### Ans:
+When a bgjob fails, frappe logs the exception in Error log and marks it in RQ failed jobs. By deault, frappe retries a failed job 3 times using Redis queue, after exceeds job is marked permanently failed
+
+### K2 - Scheduler Events & Cron
+### Que: How do you disable the scheduler for a specific site? Why would you do this on a dev site?
+
+### Ans:
+cmd: bench --site site_name.local disable-scheduler
+enable back : bench --site site_name.local enable-scheduler
+
+To disable in dev site, 
+* To avoid unwanted bg jobs, while testing
+* To save system resources workers + cron jobs consume CPU + DB load
+* Allowed controlled manual testing
+
+### Que: Explain: what happens to scheduled jobs that were queued while the worker was down - do they run when the worker comes back up?
+
+### Ans:
+When workers down, scheduled jobs still get added to redis queue, but will not execute. When workers comes backup, worker starts reading Redis queue again
 
 ### K3 - Performance Engineering
 

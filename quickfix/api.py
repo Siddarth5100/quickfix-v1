@@ -3,6 +3,13 @@ from frappe.utils import nowdate, add_days, now_datetime
 from frappe.query_builder import DocType
 import hmac, hashlib, json
 
+'''
+# B1 - Trace a Request End-to-End (Testing purpose)
+@frappe.whitelist()
+def test_error():
+    frappe.get_doc("Job Card", "JC-2026-00035")
+'''
+    
 # Part B - frappe.qb Query Builder
 # Write a function get_overdue_jobs() using frappe.qb
 @frappe.whitelist()
@@ -96,6 +103,7 @@ def custom_get_count(doctype, filters = None, debug = False, cache = False):
     }).insert(ignore_permissions = True)
 
     from frappe.client import get_count
+
     return get_count(doctype, filters, debug, cache)
 
 @frappe.whitelist()
@@ -110,11 +118,12 @@ def add_rejection_update():
 def test_method():
     import time
     time.sleep(5)
+    
     return "Test method validate process"
 '''
 
 # L1 - REST Resource API & Custom API
-# Task C - Custom whitelisted method design:
+# Task C - Custom whitelisted method desi`g`n:
 @frappe.whitelist()
 def get_job_summary():
     job_card_name = frappe.form_dict.get("job_card_name")
@@ -177,4 +186,10 @@ def payment_webhook():
     return {
         "status": "ok"
     }
+
+# I6 - Dashboard Chart, Number Cards
+# Bar Chart: Job count per status
+@frappe.whitelist()
+def get_status_chart_data():
+    pass
 
