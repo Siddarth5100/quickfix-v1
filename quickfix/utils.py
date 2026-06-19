@@ -76,26 +76,24 @@ def send_job_ready_email(docname):
         message= f"Hi {doc.customer_name}, you device: {doc.device_type}"
     )
 
-''' want to check
 # Task B - Idempotency:
 def check_low_stock():
     last_run = frappe.db.get_value("Audit Log", {
-        "action": "low_stock_check",
-        "date": today()
+        "action": "Low stock check",
+        "creation": ("like", today() + "%")
     }, "name")
 
     if last_run:
         return
-    
+
     frappe.get_doc({
         "doctype": "Audit Log",
         "doctype_name": "Spare Part",
         "document_name" : "Daily Low stock Check",
         "action": "Low stock check",
         "user": "Admin",
-        "timestamp": now_datetime()
+        "time_stamp": now_datetime()
     }).insert()
-'''
 
 # L2 - Webhooks: Outgoing & Incoming
 # Task A - Outgoing Webhook:
