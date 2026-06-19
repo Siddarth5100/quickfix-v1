@@ -1,7 +1,6 @@
 // want to check how to change color in UI
 frappe.listview_settings["Job Card"] = {
     get_indicator(doc) {
-
         if (doc.status == "Ready for Delivery") {
             return ["Ready for Delivery", "blue"];
         } 
@@ -11,7 +10,7 @@ frappe.listview_settings["Job Card"] = {
         }
 
         if (doc.status == "Pending Diagnosis") {
-            return["Pending Diagnosis", "green"]
+            return ["Pending Diagnosis", "Orange"]
         }
     }
 }
