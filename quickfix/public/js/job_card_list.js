@@ -1,6 +1,10 @@
 // want to check how to change color in UI
 frappe.listview_settings["Job Card"] = {
+    add_fields: ["status"], 
+
     get_indicator(doc) {
+        console.log(doc.status);
+
         if (doc.status == "Ready for Delivery") {
             return ["Ready for Delivery", "blue"];
         } 
