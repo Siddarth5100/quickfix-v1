@@ -135,3 +135,6 @@ class JobCard(Document):
 		# print("--------------------------On_update called")
 		# self.save()
 		pass
+
+	def before_print(self, settings= None):
+		self.print_summary = f"{self.customer_name} - {self.device_brand} {self.device_model}"
