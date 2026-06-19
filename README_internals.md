@@ -25,6 +25,14 @@ ValidationError: Cannot edit cancelled document
 * validate is part of save process, cause recursion error, validate only validate
 * Updating another document on validate, again it is not validating
 
+def validate(self):
+    self.total = sum(r.amount for r in self.items)
+
+def on_submit(self):
+    other = frappe.get_doc("Spare Part", self.part)
+    other.stock_qty -= self.qty
+    other.save()
+
 ### C1 - Device Type, Technician, Spare Part, QuickFix Settings
 ### Child Table Internals
 * parent, parentfield, parenttype, idx
@@ -603,3 +611,8 @@ Website context
 Inspected Redis cache using 
 frape.cache().get_keys(), frappe.clear_cache() followed by browser refresh 
 
+### Task C - Debugging stale UI:
+
+### Que: After making a JS change, the browser shows old JS. Explain: what command clears the asset cache? What role does bench build --app quickfix play?
+
+### Ans:
