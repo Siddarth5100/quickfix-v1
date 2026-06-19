@@ -95,6 +95,24 @@ def check_low_stock():
         "time_stamp": now_datetime()
     }).insert()
 
+# Task C - Long-running job with progress updates:
+def generate_monthly_revenue_report(year):
+    months = range(1, 13)
+    for i, month in enumerate(months, 1):
+        frappe.publish_progress(
+            percent = round(i/12* 100),
+            title = "Generating Revenue Report",
+            description = f"Processing moth {month}"
+        )
+    
+def enqueue_monthly_report():
+    frappe.enqueue(
+        "quickfix.utils.generate_monthly_revenue_report",
+        queue= "long",
+        timeout= 600,
+        year= 2026
+    )
+
 # L2 - Webhooks: Outgoing & Incoming
 # Task A - Outgoing Webhook:
 def send_webhook(job_card_name, retry_count=0):

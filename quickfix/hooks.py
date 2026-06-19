@@ -246,7 +246,13 @@ doc_events = {
 scheduler_events = {
     "daily": [
         "quickfix.utils.check_low_stock"
-	]
+	],
+    
+	"cron": {
+        "0 2 1 * *": [
+            "quickfix.utils.enqueue_monthly_report"
+		]
+	}
 }
 
 # Testing
